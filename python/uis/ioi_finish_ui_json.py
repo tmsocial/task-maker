@@ -19,6 +19,7 @@ class IOIFinishUIJSON(FinishUI):
 
     def print(self):
         res = {
+            "type": "task-maker",
             "action": "result",
             "task": self.task.to_dict(),
             "subtasks": self._get_subtasks(),

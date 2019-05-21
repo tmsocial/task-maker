@@ -20,6 +20,8 @@ from task_maker.task_maker_frontend import Result, ResultStatus, Resources
 from task_maker.uis.ui_printer import UIPrinter
 from typing import Dict, List, Optional
 
+from task_maker.uis.ui_tmsocial_printer import UITMSocialPrinter
+
 
 class SourceFileCompilationStatus(Enum):
     """
@@ -54,7 +56,7 @@ class UIInterface:
     The UI will use the data inside this.
     """
 
-    def __init__(self, task: Task, do_print: bool, json: bool):
+    def __init__(self, task: Task, do_print: bool, json: bool, tmsocial=False):
         """
         :param task: The task this UIInterface is bound to
         :param do_print: Whether the logs should be printed to stdout (print
@@ -73,7 +75,11 @@ class UIInterface:
             self.printer = StdoutPrinter()
         else:
             self.printer = Printer()
-        self.ui_printer = UIPrinter(self.printer, json)
+
+        if tmsocial:
+            self.ui_printer = UITMSocialPrinter()
+        else:
+            self.ui_printer = UIPrinter(self.printer, json)
 
     def add_non_solution(self, source_file: SourceFile):
         """

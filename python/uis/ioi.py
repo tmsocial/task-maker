@@ -304,8 +304,8 @@ class IOIUIInterface(UIInterface):
     """
 
     def __init__(self, task: IOITask, testcases: Dict[int, List[int]],
-                 do_print: bool, json: bool):
-        super().__init__(task, do_print, json)
+                 do_print: bool, json: bool, tmsocial=False):
+        super().__init__(task, do_print, json, tmsocial)
 
         self.task = task
         self.subtasks = dict(

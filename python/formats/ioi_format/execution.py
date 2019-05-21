@@ -27,7 +27,7 @@ def evaluate_task(frontend: Frontend, task: IOITask, solutions: List[Solution],
         task,
         dict((st_num, [tc for tc in st.testcases.keys()])
              for st_num, st in task.subtasks.items()),
-        config.ui in [UIS.PRINT, UIS.JSON], config.ui == UIS.JSON)
+        config.ui in [UIS.PRINT, UIS.JSON], config.ui == UIS.JSON, config.ui == UIS.TMSOCIAL)
     pool = ExecutionPool(config, frontend, ui_interface.ui_printer)
     ui_interface.pool = pool
     curses_ui = None
@@ -39,6 +39,8 @@ def evaluate_task(frontend: Frontend, task: IOITask, solutions: List[Solution],
             finish_ui = IOIFinishUI(config, ui_interface)
         elif config.ui == UIS.JSON:
             finish_ui = IOIFinishUIJSON(config, ui_interface)
+        elif config.ui == UIS.TMSOCIAL:
+            finish_ui = None
         else:
             raise ValueError("Unsupported UI %s" % str(config.ui))
 
