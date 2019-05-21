@@ -16,6 +16,7 @@ from task_maker.statements.oii_tex import OIITexStatement
 from task_maker.task_maker_frontend import Frontend, Result, ResultStatus
 from task_maker.uis import UIPrinter
 from task_maker.uis.ioi import IOIUIInterface
+from task_maker.formats.tmsocial_metadata import generate_metadata
 from typing import Dict, List, Tuple
 
 
@@ -61,7 +62,9 @@ class IOIFormat(TaskFormat):
     @staticmethod
     def task_info(config: Config):
         task = get_task(config)
-        if config.ui == UIS.JSON:
+        if config.ui == UIS.TMSOCIAL:
+            print(json.dumps(generate_metadata(task, config.task_dir)))
+        elif config.ui == UIS.JSON:
             print(json.dumps(task.to_dict()))
         elif config.ui != UIS.SILENT:
             pprint.pprint(task.to_dict())
