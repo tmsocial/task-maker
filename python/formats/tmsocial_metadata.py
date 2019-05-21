@@ -31,7 +31,6 @@ def generate_statement(*, task_dir: str):
         pdf_base64 = None
 
     return dict(
-        html=dict(default="<html><body>" + "lorem ipsum " * 1000 + "</body></html>"),
         pdf_base64=pdf_base64,
     )
 
