@@ -19,10 +19,10 @@ class UITMSocialPrinter:
         self.value_event(key=f"{base_key}.score", value=info.score)
         self.value_event(key=f"{base_key}.error", value=info.result[0].error)
         self.value_event(key=f"{base_key}.was_killed", value=info.result[0].was_killed)
-        self.value_event(key=f"{base_key}.return_code", value=info.result[0].return_code)
+        self.value_event(key=f"{base_key}.return_code", value=info.result[0].return_code if info.result[0].was_killed else 0)
         self.value_event(key=f"{base_key}.time_usage", value=info.result[0].resources.cpu_time)
         self.value_event(key=f"{base_key}.memory_usage", value=info.result[0].resources.memory)
-        self.value_event(key=f"{base_key}.signal", value=info.result[0].signal)
+        self.value_event(key=f"{base_key}.signal", value=info.result[0].signal if info.result[0].was_killed else None)
 
     def subtask_outcome(self, solution: str, subtask: int,
                         result: "SubtaskSolutionResult", score: float):
