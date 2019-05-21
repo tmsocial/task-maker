@@ -76,7 +76,7 @@ class UIPrinter:
             if "result" in data and data["result"]["was_cached"]:
                 name += " [cached]"
             if state == "WAITING":
-                self.printer.text("{name}\n")
+                self.printer.text(f"{name}\n")
             elif state == "SKIPPED":
                 self.printer.yellow(f"{name}\n")
             elif state == "START":
