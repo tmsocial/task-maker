@@ -92,4 +92,5 @@ def generate_metadata(task: IOITask, task_dir: str):
         evaluation_sections=[
             generate_table(task),
         ],
+        task_maker_info=task.to_dict(),
     )
