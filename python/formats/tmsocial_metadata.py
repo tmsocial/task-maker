@@ -77,6 +77,13 @@ def generate_table(task: IOITask):
     )
 
 
+def generate_scorables(task: IOITask):
+    return [
+        dict(key=f"subtask.{index}.score", title=dict(default=f"Subtask {index}"), max_score=subtask.max_score)
+        for index, subtask in task.subtasks.items()
+    ]
+
+
 def generate_metadata(task: IOITask, task_dir: str):
     return dict(
         title=dict(default=task.title),
@@ -89,6 +96,7 @@ def generate_metadata(task: IOITask, task_dir: str):
                 dict(id="python2.py", title=dict(default="Python 2"), extensions=[".py"]),
             ], required=True)
         ]),
+        scorables=generate_scorables(task),
         evaluation_sections=[
             generate_table(task),
         ],
