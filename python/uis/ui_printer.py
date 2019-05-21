@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import json
+
 from task_maker.printer import Printer
 from typing import Dict
 
@@ -14,42 +15,48 @@ class UIPrinter:
         self.printer = printer
         self.json = json
 
-    def testcase_outcome(self, solution: str, testcase: int, subtask: int,
-                         info: "TestcaseSolutionInfo"):
+    def testcase_outcome(self, solution: str, testcase: int, subtask: int, info: "TestcaseSolutionInfo"):
         self.print(
-            "Solution %s on testcase %d scored %.2f" %
-            (solution, testcase, info.score), "testcase-outcome", "SUCCESS", {
+            f"Solution {solution} on testcase {testcase} scored {info.score:.2f}",
+            "testcase-outcome",
+            "SUCCESS",
+            {
                 "name": solution,
                 "testcase": testcase,
                 "subtask": subtask,
                 "status": str(info.status).split(".")[-1],
                 "score": info.score,
-                "message": info.message
-            })
+                "message": info.message,
+            }
+        )
 
-    def subtask_outcome(self, solution: str, subtask: int,
-                        result: "SubtaskSolutionResult", score: float):
+    def subtask_outcome(self, solution: str, subtask: int, result: "SubtaskSolutionResult", score: float):
         self.print(
-            "Solution %s on subtask %d scored %.2f" %
-            (solution, subtask, score), "subtask-outcome", "SUCCESS", {
+            f"Solution {solution} on subtask {subtask} scored {score:.2f}",
+            "subtask-outcome",
+            "SUCCESS",
+            {
                 "name": solution,
                 "subtask": subtask,
                 "status": str(result).split(".")[-1],
-                "score": score
-            })
+                "score": score,
+            }
+        )
 
     def terry_solution_outcome(self, solution: str, info: "SolutionInfo"):
         self.print(
-            "Outcome of solution %s: score=%f message=%s" %
-            (solution, info.score, info.message), "terry-solution-outcome",
-            "SUCCESS", {
+            f"Outcome of solution {solution}: score={info.score} message={info.message}",
+            "terry-solution-outcome",
+            "SUCCESS",
+            {
                 "name": solution,
                 "status": str(info.status).split(".")[-1],
                 "score": info.score,
                 "message": info.message,
                 "testcases":
                     [str(s).split(".")[-1] for s in info.testcases_status]
-            })
+            }
+        )
 
     def warning(self, message: str):
         self.print(message, "warning", "WARNING", {"message": message})
@@ -57,29 +64,28 @@ class UIPrinter:
     def error(self, message: str):
         self.print(message, "error", "ERROR", {"message": message})
 
-    def print(self, name: str, tag: str, state: str, data: Dict):
+    def print(self, name: str, tag: str, state: str, data: Dict[str, object]):
         if self.json:
-            data = {"action": tag, "state": state.upper(), "data": data}
-            res = json.dumps(data)
-            print(res, flush=True)
+            print(json.dumps({
+                "action": tag,
+                "state": state.upper(),
+                "data": data
+            }), flush=True)
         else:
             name = (name + " ").ljust(50) + state
-            cached = False
             if "result" in data and data["result"]["was_cached"]:
-                cached = True
-            if cached:
                 name += " [cached]"
             if state == "WAITING":
-                self.printer.text(name + "\n")
+                self.printer.text("{name}\n")
             elif state == "SKIPPED":
-                self.printer.yellow(name + "\n")
+                self.printer.yellow(f"{name}\n")
             elif state == "START":
-                self.printer.text(name + "\n")
+                self.printer.text(f"{name}\n")
             elif state == "SUCCESS":
-                self.printer.green(name + "\n")
+                self.printer.green(f"{name}\n")
             elif state == "WARNING":
-                self.printer.yellow(name + " " + str(data) + "\n")
+                self.printer.yellow(f"{name} {data}\n")
             elif state == "FAILURE" or state == "ERROR":
-                self.printer.red(name + " " + str(data) + "\n")
+                self.printer.red(f"{name} {data}\n")
             else:
-                raise ValueError("Unknown state " + state)
+                raise ValueError(f"Unknown state {state}")
