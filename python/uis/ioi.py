@@ -62,7 +62,7 @@ class TestcaseSolutionInfo:
         self.message = "Waiting..."
         self.checker_outcome = "Waiting..."
         self.checked = False
-        self.checker_result = None  # type: Result
+        self.checker_result = None  # type: Optional[Result]
 
 
 class TestcaseGenerationResult:
@@ -72,9 +72,9 @@ class TestcaseGenerationResult:
 
     def __init__(self):
         self.status = TestcaseGenerationStatus.WAITING
-        self.generation = None  # type: Execution
-        self.validation = None  # type: Execution
-        self.solution = None  # type: Execution
+        self.generation = None  # type: Optional[Execution]
+        self.validation = None  # type: Optional[Execution]
+        self.solution = None  # type: Optional[Execution]
 
 
 class CustomCheckerState:
@@ -84,9 +84,9 @@ class CustomCheckerState:
 
     def __init__(self, solution: str):
         self.solution = solution
-        self.result = None  # type: Result
-        self.stdout = None  # type: str
-        self.stderr = None  # type: str
+        self.result = None  # type: Optional[Result]
+        self.stdout = None  # type: Optional[str]
+        self.stderr = None  # type: Optional[str]
         self.callback = None  # type: Optional[Callable[[], None]]
 
     def set_result(self, result: Result):
